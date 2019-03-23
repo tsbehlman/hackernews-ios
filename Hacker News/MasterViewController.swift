@@ -77,9 +77,10 @@ class MasterViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-
         let story = stories[indexPath.row]
+        let commentsLabel = "comment" + (story.descendants == 1 ? "" : "s")
         cell.textLabel!.text = story.title
+        cell.detailTextLabel!.text = "\(story.descendants) \(commentsLabel)  \(story.domain)"
         return cell
     }
 }
