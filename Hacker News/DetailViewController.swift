@@ -7,34 +7,42 @@
 //
 
 import UIKit
+import WebKit
 
-class DetailViewController: UIViewController {
-
-    @IBOutlet weak var detailDescriptionLabel: UILabel!
-
+class DetailViewController: UIViewController, WKNavigationDelegate {
 
     func configureView() {
         // Update the user interface for the detail item.
-        if let detail = detailItem {
-            if let label = detailDescriptionLabel {
-                label.text = detail.description
+        if let story = detailItem {
+            if let view = self.view as! WKWebView? {
+                if let storyURL = URL(string: story.url) {
+                    let storyRequest = URLRequest(url: storyURL)
+                    view.load(storyRequest)
+                }
             }
+            self.navigationItem.title = story.domain
         }
+    }
+    
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        decisionHandler(.allow)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         configureView()
+        
+        if let view = self.view as! WKWebView? {
+            view.navigationDelegate = self
+        }
     }
 
-    var detailItem: NSDate? {
+    var detailItem: Story? {
         didSet {
             // Update the view.
             configureView()
         }
     }
-
-
 }
 

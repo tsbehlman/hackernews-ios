@@ -7,3 +7,29 @@
 //
 
 import Foundation
+
+class HackerNews {
+    static let baseURL = URL(string:"http://tbehlman.com/hackernews/")!;
+    
+    typealias Page = [Story]
+    typealias PageCompletion = (Page?) -> Void
+    
+    static func stories(forPage pageIndex: Int, _ completion: @escaping PageCompletion) {
+        let pageURL = baseURL.appendingPathComponent("page/\(pageIndex)")
+        URLSession.shared.dataTask(with: pageURL) { data, response, error in
+            completion(HackerNews.didReceivePageOfStories(data: data, response: response, error: error))
+        }.resume()
+    }
+    
+    private static func didReceivePageOfStories(data: Data?, response: URLResponse?, error: Error?) -> Page? {
+        if let data = data, let response = response as? HTTPURLResponse {
+            if response.statusCode == 200 {
+                do {
+                    return try JSONDecoder().decode([Story].self, from: data)
+                } catch {}
+            }
+        }
+        
+        return nil
+    }
+}

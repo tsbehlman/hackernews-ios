@@ -13,6 +13,8 @@
 		ABFC51232245EF01004E4ADB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABFC51212245EF01004E4ADB /* Main.storyboard */; };
 		ABFC51252245EF03004E4ADB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ABFC51242245EF03004E4ADB /* Assets.xcassets */; };
 		ABFC51282245EF03004E4ADB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABFC51262245EF03004E4ADB /* LaunchScreen.storyboard */; };
+		ABFC51302245F6CC004E4ADB /* HackerNews.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFC512F2245F6CC004E4ADB /* HackerNews.swift */; };
+		ABFC51322245F883004E4ADB /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFC51312245F883004E4ADB /* Story.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		ABFC51242245EF03004E4ADB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ABFC51272245EF03004E4ADB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ABFC51292245EF03004E4ADB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ABFC512F2245F6CC004E4ADB /* HackerNews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackerNews.swift; sourceTree = "<group>"; };
+		ABFC51312245F883004E4ADB /* Story.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Story.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +67,8 @@
 				ABFC51242245EF03004E4ADB /* Assets.xcassets */,
 				ABFC51262245EF03004E4ADB /* LaunchScreen.storyboard */,
 				ABFC51292245EF03004E4ADB /* Info.plist */,
+				ABFC512F2245F6CC004E4ADB /* HackerNews.swift */,
+				ABFC51312245F883004E4ADB /* Story.swift */,
 			);
 			path = "Hacker News";
 			sourceTree = "<group>";
@@ -140,7 +146,9 @@
 			files = (
 				ABFC51202245EF01004E4ADB /* DetailViewController.swift in Sources */,
 				ABFC511E2245EF01004E4ADB /* MasterViewController.swift in Sources */,
+				ABFC51302245F6CC004E4ADB /* HackerNews.swift in Sources */,
 				ABFC511C2245EF01004E4ADB /* AppDelegate.swift in Sources */,
+				ABFC51322245F883004E4ADB /* Story.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,6 +295,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = VE6CSLGJ83;
 				INFOPLIST_FILE = "Hacker News/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -304,6 +313,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = VE6CSLGJ83;
 				INFOPLIST_FILE = "Hacker News/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

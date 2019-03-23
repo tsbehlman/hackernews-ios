@@ -7,3 +7,11 @@
 //
 
 import Foundation
+
+struct Story: Decodable {
+    let id: UInt
+    let url: String
+    let title: String
+    let descendants: UInt
+    let domain: String
+}
