@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MasterViewController: UITableViewController {
+class TopStoriesViewController: UITableViewController {
 
     var detailViewController: DetailViewController? = nil
     var stories = [Story]()
@@ -109,7 +109,7 @@ class MasterViewController: UITableViewController {
     }
 }
 
-extension MasterViewController: UITableViewDataSourcePrefetching {
+extension TopStoriesViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         if !isLoadingData && indexPaths.contains { $0.row >= self.stories.count } {
             isLoadingData = true
