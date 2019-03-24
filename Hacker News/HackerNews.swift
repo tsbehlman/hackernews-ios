@@ -14,7 +14,7 @@ class HackerNews {
     typealias Page = [Story]
     typealias PageCompletion = (Page?) -> Void
     
-    static func stories(forPage pageIndex: Int, _ completion: @escaping PageCompletion) {
+    static func stories(forPage pageIndex: UInt, _ completion: @escaping PageCompletion) {
         let pageURL = baseURL.appendingPathComponent("page/\(pageIndex)")
         URLSession.shared.dataTask(with: pageURL) { data, response, error in
             completion(HackerNews.didReceivePageOfStories(data: data, response: response, error: error))

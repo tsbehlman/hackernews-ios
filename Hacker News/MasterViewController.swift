@@ -12,6 +12,9 @@ class MasterViewController: UITableViewController {
 
     var detailViewController: DetailViewController? = nil
     var stories = [Story]()
+    var loadedStoryIDs = Set<UInt>()
+    var storyPageIndex: UInt = 1
+    var isLoadingData = false
 
 
     override func viewDidLoad() {
@@ -42,14 +45,17 @@ class MasterViewController: UITableViewController {
     }
     
     private func refreshStories() {
+        isLoadingData = true
         HackerNews.stories(forPage: 1) { stories in
             DispatchQueue.main.async {
                 if let stories = stories {
+                    self.storyPageIndex = 1
                     self.stories.removeAll()
                     self.stories.append(contentsOf: stories)
                     self.tableView.reloadData()
                 }
                 
+                self.isLoadingData = false
                 self.refreshControl!.endRefreshing()
             }
         }
@@ -82,6 +88,30 @@ class MasterViewController: UITableViewController {
         cell.textLabel!.text = story.title
         cell.detailTextLabel!.text = "\(story.descendants) \(commentsLabel)  \(story.domain)"
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let lastElementIndex = stories.count - 1
+        if !isLoadingData && indexPath.row == lastElementIndex {
+            isLoadingData = true
+            self.storyPageIndex += 1
+            HackerNews.stories(forPage: storyPageIndex) { stories in
+                DispatchQueue.main.async {
+                    if let stories = stories {
+                        for story in stories {
+                            if !self.loadedStoryIDs.contains(story.id) {
+                                self.stories.append(story)
+                                self.loadedStoryIDs.insert(story.id)
+                            }
+                        }
+                        self.tableView.reloadData()
+                    }
+                    
+                    self.isLoadingData = false
+                    self.refreshControl!.endRefreshing()
+                }
+            }
+        }
     }
 }
 
