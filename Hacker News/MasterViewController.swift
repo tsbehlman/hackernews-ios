@@ -26,12 +26,12 @@ class MasterViewController: UITableViewController {
         }
         
         let refreshControl = UIRefreshControl()
-        
         refreshControl.addTarget(self, action: #selector(userDidRequestRefresh(_:)), for: .valueChanged)
-        
         self.refreshControl = refreshControl
         
         self.refreshStories()
+        
+        tableView.prefetchDataSource = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -47,22 +47,36 @@ class MasterViewController: UITableViewController {
     private func refreshStories() {
         isLoadingData = true
         HackerNews.stories(forPage: 1) { stories in
+            self.isLoadingData = false
+            
+            if let stories = stories {
+                self.storyPageIndex = 1
+                self.stories.removeAll()
+                self.stories.append(contentsOf: stories)
+            }
+            
             DispatchQueue.main.async {
-                if let stories = stories {
-                    self.storyPageIndex = 1
-                    self.stories.removeAll()
-                    self.stories.append(contentsOf: stories)
-                    self.tableView.reloadData()
-                }
-                
-                self.isLoadingData = false
                 self.refreshControl!.endRefreshing()
+                self.tableView.reloadData()
             }
         }
     }
 
     // MARK: - Segues
 
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        if identifier == "showDetail" {
+            if let indexPath = tableView.indexPathForSelectedRow {
+                if indexPath.row >= stories.count {
+                    tableView.deselectRow(at: indexPath, animated: true)
+                    return false
+                }
+            }
+        }
+        
+        return true
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
             if let indexPath = tableView.indexPathForSelectedRow {
@@ -78,40 +92,51 @@ class MasterViewController: UITableViewController {
     // MARK: - Table View
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return stories.count
+        return 10000
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        let story = stories[indexPath.row]
-        let commentsLabel = "comment" + (story.descendants == 1 ? "" : "s")
-        cell.textLabel!.text = story.title
-        cell.detailTextLabel!.text = "\(story.descendants) \(commentsLabel)  \(story.domain)"
+        if indexPath.row < stories.count {
+            let story = stories[indexPath.row]
+            let commentsLabel = "comment" + (story.descendants == 1 ? "" : "s")
+            cell.textLabel!.text = story.title
+            cell.detailTextLabel!.text = "\(story.descendants) \(commentsLabel)  \(story.domain)"
+        } else {
+            cell.textLabel!.text = ""
+            cell.detailTextLabel!.text = ""
+        }
         return cell
     }
-    
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let lastElementIndex = stories.count - 1
-        if !isLoadingData && indexPath.row == lastElementIndex {
+}
+
+extension MasterViewController: UITableViewDataSourcePrefetching {
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        if !isLoadingData && indexPaths.contains { $0.row >= self.stories.count } {
             isLoadingData = true
             self.storyPageIndex += 1
             HackerNews.stories(forPage: storyPageIndex) { stories in
-                DispatchQueue.main.async {
-                    if let stories = stories {
-                        for story in stories {
-                            if !self.loadedStoryIDs.contains(story.id) {
-                                self.stories.append(story)
-                                self.loadedStoryIDs.insert(story.id)
+                self.isLoadingData = false
+                if let stories = stories {
+                    var indexPaths = [IndexPath]()
+                    for story in stories {
+                        if !self.loadedStoryIDs.contains(story.id) {
+                            let indexPath = IndexPath(row: self.stories.count, section: 0)
+                            indexPaths.append(indexPath)
+                            self.stories.append(story)
+                            self.loadedStoryIDs.insert(story.id)
+                        }
+                    }
+                    DispatchQueue.main.async {
+                        if let visibleIndexPaths = self.tableView.indexPathsForVisibleRows {
+                            indexPaths = indexPaths.filter { visibleIndexPaths.contains($0) }
+                            if indexPaths.count > 0 {
+                                self.tableView.reloadRows(at: indexPaths, with: .none)
                             }
                         }
-                        self.tableView.reloadData()
                     }
-                    
-                    self.isLoadingData = false
-                    self.refreshControl!.endRefreshing()
                 }
             }
         }
     }
 }
-
