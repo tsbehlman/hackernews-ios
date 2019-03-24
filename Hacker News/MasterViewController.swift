@@ -16,7 +16,6 @@ class MasterViewController: UITableViewController {
     var storyPageIndex: UInt = 1
     var isLoadingData = false
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -114,26 +113,30 @@ extension MasterViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         if !isLoadingData && indexPaths.contains { $0.row >= self.stories.count } {
             isLoadingData = true
-            self.storyPageIndex += 1
+            storyPageIndex += 1
             HackerNews.stories(forPage: storyPageIndex) { stories in
                 self.isLoadingData = false
                 if let stories = stories {
-                    var newRowIndices = Set<Int>()
-                    for story in stories {
-                        if !self.loadedStoryIDs.contains(story.id) {
-                            newRowIndices.insert(self.stories.count)
-                            self.stories.append(story)
-                            self.loadedStoryIDs.insert(story.id)
-                        }
-                    }
-                    DispatchQueue.main.async {
-                        if var visibleIndexPaths = self.tableView.indexPathsForVisibleRows {
-                            visibleIndexPaths = visibleIndexPaths.filter( { newRowIndices.contains($0.row) } )
-                            if visibleIndexPaths.count > 0 {
-                                self.tableView.reloadRows(at: visibleIndexPaths, with: .none)
-                            }
-                        }
-                    }
+                    self.newPageDidLoad(stories: stories)
+                }
+            }
+        }
+    }
+    
+    private func newPageDidLoad(stories: [Story]) {
+        var newRowIndices = Set<Int>()
+        for story in stories {
+            if !loadedStoryIDs.contains(story.id) {
+                newRowIndices.insert(self.stories.count)
+                self.stories.append(story)
+                loadedStoryIDs.insert(story.id)
+            }
+        }
+        DispatchQueue.main.async {
+            if var indexPaths = self.tableView.indexPathsForVisibleRows {
+                indexPaths = indexPaths.filter( { newRowIndices.contains($0.row) } )
+                if indexPaths.count > 0 {
+                    self.tableView.reloadRows(at: indexPaths, with: .none)
                 }
             }
         }
