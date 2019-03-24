@@ -15,10 +15,9 @@ class DetailViewController: UIViewController, WKNavigationDelegate {
         // Update the user interface for the detail item.
         if let story = detailItem {
             if let view = self.view as! WKWebView? {
-                if let storyURL = URL(string: story.url) {
-                    let storyRequest = URLRequest(url: storyURL)
-                    view.load(storyRequest)
-                }
+                let storyURL = HackerNews.readableURL(forStory: story)
+                let storyRequest = URLRequest(url: storyURL)
+                view.load(storyRequest)
             }
             self.navigationItem.title = story.domain
         }

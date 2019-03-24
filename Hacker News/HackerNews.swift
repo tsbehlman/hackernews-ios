@@ -21,6 +21,10 @@ class HackerNews {
         }.resume()
     }
     
+    static func readableURL(forStory story: Story) -> URL {
+        return baseURL.appendingPathComponent("view/\(story.id)")
+    }
+    
     private static func didReceivePageOfStories(data: Data?, response: URLResponse?, error: Error?) -> Page? {
         if let data = data, let response = response as? HTTPURLResponse {
             if response.statusCode == 200 {
