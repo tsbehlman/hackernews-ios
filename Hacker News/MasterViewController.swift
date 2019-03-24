@@ -118,20 +118,19 @@ extension MasterViewController: UITableViewDataSourcePrefetching {
             HackerNews.stories(forPage: storyPageIndex) { stories in
                 self.isLoadingData = false
                 if let stories = stories {
-                    var indexPaths = [IndexPath]()
+                    var newRowIndices = Set<Int>()
                     for story in stories {
                         if !self.loadedStoryIDs.contains(story.id) {
-                            let indexPath = IndexPath(row: self.stories.count, section: 0)
-                            indexPaths.append(indexPath)
+                            newRowIndices.insert(self.stories.count)
                             self.stories.append(story)
                             self.loadedStoryIDs.insert(story.id)
                         }
                     }
                     DispatchQueue.main.async {
-                        if let visibleIndexPaths = self.tableView.indexPathsForVisibleRows {
-                            indexPaths = indexPaths.filter { visibleIndexPaths.contains($0) }
-                            if indexPaths.count > 0 {
-                                self.tableView.reloadRows(at: indexPaths, with: .none)
+                        if var visibleIndexPaths = self.tableView.indexPathsForVisibleRows {
+                            visibleIndexPaths = visibleIndexPaths.filter( { newRowIndices.contains($0.row) } )
+                            if visibleIndexPaths.count > 0 {
+                                self.tableView.reloadRows(at: visibleIndexPaths, with: .none)
                             }
                         }
                     }
