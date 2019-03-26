@@ -35,12 +35,22 @@ class DetailViewController: UIViewController, WKNavigationDelegate {
         if let view = self.view as! WKWebView? {
             view.navigationDelegate = self
         }
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.action, target: self, action: #selector(shareArticle(_:)))
     }
 
     var detailItem: Story? {
         didSet {
             // Update the view.
             configureView()
+        }
+    }
+    
+    @objc
+    private func shareArticle(_ sender: Any) {
+        if let view = self.view as! WKWebView?, let url = view.url {
+            let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+            present(activityViewController, animated: true, completion: {})
         }
     }
 }
