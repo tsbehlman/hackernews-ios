@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ABA795292249C1C500F4F329 /* SafariActivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABA795282249C1C500F4F329 /* SafariActivity.framework */; };
 		ABFC511C2245EF01004E4ADB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFC511B2245EF01004E4ADB /* AppDelegate.swift */; };
 		ABFC511E2245EF01004E4ADB /* TopStoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFC511D2245EF01004E4ADB /* TopStoriesViewController.swift */; };
 		ABFC51202245EF01004E4ADB /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFC511F2245EF01004E4ADB /* DetailViewController.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		ABA795282249C1C500F4F329 /* SafariActivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariActivity.framework; path = Carthage/Build/iOS/SafariActivity.framework; sourceTree = "<group>"; };
 		ABFC51182245EF00004E4ADB /* Hacker News.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hacker News.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABFC511B2245EF01004E4ADB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ABFC511D2245EF01004E4ADB /* TopStoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopStoriesViewController.swift; sourceTree = "<group>"; };
@@ -35,6 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABA795292249C1C500F4F329 /* SafariActivity.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +47,7 @@
 		ABFC510F2245EF00004E4ADB = {
 			isa = PBXGroup;
 			children = (
+				ABA795282249C1C500F4F329 /* SafariActivity.framework */,
 				ABFC511A2245EF00004E4ADB /* Hacker News */,
 				ABFC51192245EF00004E4ADB /* Products */,
 			);
@@ -83,6 +87,7 @@
 				ABFC51142245EF00004E4ADB /* Sources */,
 				ABFC51152245EF00004E4ADB /* Frameworks */,
 				ABFC51162245EF00004E4ADB /* Resources */,
+				ABA7952A2249C1DD00F4F329 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -138,6 +143,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		ABA7952A2249C1DD00F4F329 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/SafariActivity.framework",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SafariActivity.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		ABFC51142245EF00004E4ADB /* Sources */ = {
@@ -296,6 +323,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VE6CSLGJ83;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "Hacker News/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -314,6 +345,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VE6CSLGJ83;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "Hacker News/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

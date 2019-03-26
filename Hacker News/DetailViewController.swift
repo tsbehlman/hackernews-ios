@@ -8,6 +8,7 @@
 
 import UIKit
 import WebKit
+import SafariActivity
 
 class DetailViewController: UIViewController, WKNavigationDelegate {
 
@@ -49,7 +50,9 @@ class DetailViewController: UIViewController, WKNavigationDelegate {
     @objc
     private func shareArticle(_ sender: Any) {
         if let view = self.view as! WKWebView?, let url = view.url {
-            let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+            let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: [
+                SafariActivity()
+            ])
             present(activityViewController, animated: true, completion: {})
         }
     }
