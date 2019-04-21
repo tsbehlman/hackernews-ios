@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import SafariServices
+import FlexLayout
 
 class TopStoriesViewController: UITableViewController {
 
-    var detailViewController: DetailViewController? = nil
     var stories = [Story]()
     var loadedStoryIDs = Set<UInt>()
     var storyPageIndex: UInt = 1
@@ -19,17 +20,13 @@ class TopStoriesViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let split = splitViewController {
-            let controllers = split.viewControllers
-            detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
-        }
-        
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(userDidRequestRefresh(_:)), for: .valueChanged)
         self.refreshControl = refreshControl
         
         self.refreshStories()
         
+        tableView.showsVerticalScrollIndicator = false
         tableView.prefetchDataSource = self
         tableView.register(StoryCell.self, forCellReuseIdentifier: "Cell")
         tableView.estimatedRowHeight = 44
@@ -64,37 +61,6 @@ class TopStoriesViewController: UITableViewController {
         }
     }
 
-    // MARK: - Segues
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "showDetail", sender: self)
-    }
-    
-    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-        if identifier == "showDetail" {
-            if let indexPath = tableView.indexPathForSelectedRow {
-                if indexPath.row >= stories.count {
-                    tableView.deselectRow(at: indexPath, animated: true)
-                    return false
-                }
-            }
-        }
-        
-        return true
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showDetail" {
-            if let indexPath = tableView.indexPathForSelectedRow {
-                let story = stories[indexPath.row] as Story
-                let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
-                controller.detailItem = story
-                controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
-                controller.navigationItem.leftItemsSupplementBackButton = true
-            }
-        }
-    }
-
     // MARK: - Table View
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -115,6 +81,17 @@ class TopStoriesViewController: UITableViewController {
         cell.titleLabel.flex.markDirty()
         cell.detailLabel.flex.markDirty()
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row >= stories.count {
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+        else {
+            let story = stories[indexPath.row] as Story
+            let safariController = SFSafariViewController(url: HackerNews.readableURL(forStory: story))
+            splitViewController!.showDetailViewController(safariController, sender: nil)
+        }
     }
 }
 

@@ -39,8 +39,9 @@ class StoryCell: UITableViewCell {
     }
     
     func setupViews() {
-        clipsToBounds = true
-        contentView.flex.padding(12).alignItems(.stretch).define { flex in
+        contentView.flex.define { flex in
+            flex.padding(12)
+            flex.alignItems(.stretch)
             flex.addItem(titleLabel).grow(1)
             flex.addItem(detailLabel).marginTop(8)
         }

@@ -9,11 +9,9 @@
 /* Begin PBXBuildFile section */
 		AB89379B226C100A00DD6876 /* FlexLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB89379A226C100A00DD6876 /* FlexLayout.framework */; };
 		AB89379D226C10BA00DD6876 /* StoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB89379C226C10BA00DD6876 /* StoryCell.swift */; };
-		ABA795292249C1C500F4F329 /* SafariActivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABA795282249C1C500F4F329 /* SafariActivity.framework */; };
+		ABD13111226C416C00BE4B1A /* BlurredStatusBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABD13110226C416C00BE4B1A /* BlurredStatusBarViewController.swift */; };
 		ABFC511C2245EF01004E4ADB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFC511B2245EF01004E4ADB /* AppDelegate.swift */; };
 		ABFC511E2245EF01004E4ADB /* TopStoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFC511D2245EF01004E4ADB /* TopStoriesViewController.swift */; };
-		ABFC51202245EF01004E4ADB /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFC511F2245EF01004E4ADB /* DetailViewController.swift */; };
-		ABFC51232245EF01004E4ADB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABFC51212245EF01004E4ADB /* Main.storyboard */; };
 		ABFC51252245EF03004E4ADB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ABFC51242245EF03004E4ADB /* Assets.xcassets */; };
 		ABFC51282245EF03004E4ADB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABFC51262245EF03004E4ADB /* LaunchScreen.storyboard */; };
 		ABFC51302245F6CC004E4ADB /* HackerNews.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFC512F2245F6CC004E4ADB /* HackerNews.swift */; };
@@ -23,12 +21,10 @@
 /* Begin PBXFileReference section */
 		AB89379A226C100A00DD6876 /* FlexLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FlexLayout.framework; path = Carthage/Build/iOS/FlexLayout.framework; sourceTree = "<group>"; };
 		AB89379C226C10BA00DD6876 /* StoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCell.swift; sourceTree = "<group>"; };
-		ABA795282249C1C500F4F329 /* SafariActivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariActivity.framework; path = Carthage/Build/iOS/SafariActivity.framework; sourceTree = "<group>"; };
+		ABD13110226C416C00BE4B1A /* BlurredStatusBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurredStatusBarViewController.swift; sourceTree = "<group>"; };
 		ABFC51182245EF00004E4ADB /* Hacker News.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hacker News.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABFC511B2245EF01004E4ADB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ABFC511D2245EF01004E4ADB /* TopStoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopStoriesViewController.swift; sourceTree = "<group>"; };
-		ABFC511F2245EF01004E4ADB /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
-		ABFC51222245EF01004E4ADB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		ABFC51242245EF03004E4ADB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ABFC51272245EF03004E4ADB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ABFC51292245EF03004E4ADB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -41,7 +37,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ABA795292249C1C500F4F329 /* SafariActivity.framework in Frameworks */,
 				AB89379B226C100A00DD6876 /* FlexLayout.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -53,7 +48,6 @@
 			isa = PBXGroup;
 			children = (
 				AB89379A226C100A00DD6876 /* FlexLayout.framework */,
-				ABA795282249C1C500F4F329 /* SafariActivity.framework */,
 				ABFC511A2245EF00004E4ADB /* Hacker News */,
 				ABFC51192245EF00004E4ADB /* Products */,
 			);
@@ -73,13 +67,12 @@
 				ABFC511B2245EF01004E4ADB /* AppDelegate.swift */,
 				ABFC511D2245EF01004E4ADB /* TopStoriesViewController.swift */,
 				AB89379C226C10BA00DD6876 /* StoryCell.swift */,
-				ABFC511F2245EF01004E4ADB /* DetailViewController.swift */,
-				ABFC51212245EF01004E4ADB /* Main.storyboard */,
 				ABFC51242245EF03004E4ADB /* Assets.xcassets */,
 				ABFC51262245EF03004E4ADB /* LaunchScreen.storyboard */,
 				ABFC51292245EF03004E4ADB /* Info.plist */,
 				ABFC512F2245F6CC004E4ADB /* HackerNews.swift */,
 				ABFC51312245F883004E4ADB /* Story.swift */,
+				ABD13110226C416C00BE4B1A /* BlurredStatusBarViewController.swift */,
 			);
 			path = "Hacker News";
 			sourceTree = "<group>";
@@ -145,7 +138,6 @@
 			files = (
 				ABFC51282245EF03004E4ADB /* LaunchScreen.storyboard in Resources */,
 				ABFC51252245EF03004E4ADB /* Assets.xcassets in Resources */,
-				ABFC51232245EF01004E4ADB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -160,13 +152,11 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/SafariActivity.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/FlexLayout.framework",
 			);
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SafariActivity.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/FlexLayout.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -180,10 +170,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ABFC51202245EF01004E4ADB /* DetailViewController.swift in Sources */,
 				ABFC511E2245EF01004E4ADB /* TopStoriesViewController.swift in Sources */,
 				ABFC51302245F6CC004E4ADB /* HackerNews.swift in Sources */,
 				ABFC511C2245EF01004E4ADB /* AppDelegate.swift in Sources */,
+				ABD13111226C416C00BE4B1A /* BlurredStatusBarViewController.swift in Sources */,
 				ABFC51322245F883004E4ADB /* Story.swift in Sources */,
 				AB89379D226C10BA00DD6876 /* StoryCell.swift in Sources */,
 			);
@@ -192,14 +182,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		ABFC51212245EF01004E4ADB /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				ABFC51222245EF01004E4ADB /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		ABFC51262245EF03004E4ADB /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
