@@ -123,21 +123,24 @@ extension TopStoriesViewController: UITableViewDataSourcePrefetching {
         if !isLoadingData && indexPaths.contains { $0.row >= self.stories.count } {
             isLoadingData = true
             storyPageIndex += 1
+            let newStoriesStartIndex = self.stories.count
             HackerNews.stories(forPage: storyPageIndex) { stories in
                 self.isLoadingData = false
                 if let stories = stories {
-                    self.newPageDidLoad(stories: stories)
+                    self.newPageDidLoad(stories: stories, atIndex: newStoriesStartIndex)
                 }
             }
         }
     }
     
-    private func newPageDidLoad(stories: [Story]) {
+    private func newPageDidLoad(stories: [Story], atIndex: Int) {
         var newRowIndices = Set<Int>()
+        var currentIndex = atIndex
         for story in stories {
             if !loadedStoryIDs.contains(story.id) {
-                newRowIndices.insert(self.stories.count)
-                self.stories.append(story)
+                newRowIndices.insert(currentIndex)
+                self.stories.insert(story, at: currentIndex)
+                currentIndex += 1
                 loadedStoryIDs.insert(story.id)
             }
         }
