@@ -31,6 +31,9 @@ class TopStoriesViewController: UITableViewController {
         self.refreshStories()
         
         tableView.prefetchDataSource = self
+        tableView.register(StoryCell.self, forCellReuseIdentifier: "Cell")
+        tableView.estimatedRowHeight = 44
+        tableView.rowHeight = UITableView.automaticDimension
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,6 +66,10 @@ class TopStoriesViewController: UITableViewController {
 
     // MARK: - Segues
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "showDetail", sender: self)
+    }
+    
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if identifier == "showDetail" {
             if let indexPath = tableView.indexPathForSelectedRow {
@@ -95,16 +102,18 @@ class TopStoriesViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! StoryCell
         if indexPath.row < stories.count {
             let story = stories[indexPath.row]
             let commentsLabel = "comment" + (story.descendants == 1 ? "" : "s")
-            cell.textLabel!.text = story.title
-            cell.detailTextLabel!.text = "\(story.descendants) \(commentsLabel)  \(story.domain)"
+            cell.titleLabel.text = story.title
+            cell.detailLabel.text = "\(story.descendants) \(commentsLabel)  \(story.domain)"
         } else {
-            cell.textLabel!.text = ""
-            cell.detailTextLabel!.text = ""
+            cell.titleLabel.text = " "
+            cell.detailLabel.text = " "
         }
+        cell.titleLabel.flex.markDirty()
+        cell.detailLabel.flex.markDirty()
         return cell
     }
 }
@@ -134,7 +143,7 @@ extension TopStoriesViewController: UITableViewDataSourcePrefetching {
         }
         DispatchQueue.main.async {
             if var indexPaths = self.tableView.indexPathsForVisibleRows {
-                indexPaths = indexPaths.filter( { newRowIndices.contains($0.row) } )
+                indexPaths = indexPaths.filter { newRowIndices.contains($0.row) }
                 if indexPaths.count > 0 {
                     self.tableView.reloadRows(at: indexPaths, with: .none)
                 }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB89379B226C100A00DD6876 /* FlexLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB89379A226C100A00DD6876 /* FlexLayout.framework */; };
+		AB89379D226C10BA00DD6876 /* StoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB89379C226C10BA00DD6876 /* StoryCell.swift */; };
 		ABA795292249C1C500F4F329 /* SafariActivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABA795282249C1C500F4F329 /* SafariActivity.framework */; };
 		ABFC511C2245EF01004E4ADB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFC511B2245EF01004E4ADB /* AppDelegate.swift */; };
 		ABFC511E2245EF01004E4ADB /* TopStoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFC511D2245EF01004E4ADB /* TopStoriesViewController.swift */; };
@@ -19,6 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AB89379A226C100A00DD6876 /* FlexLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FlexLayout.framework; path = Carthage/Build/iOS/FlexLayout.framework; sourceTree = "<group>"; };
+		AB89379C226C10BA00DD6876 /* StoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCell.swift; sourceTree = "<group>"; };
 		ABA795282249C1C500F4F329 /* SafariActivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariActivity.framework; path = Carthage/Build/iOS/SafariActivity.framework; sourceTree = "<group>"; };
 		ABFC51182245EF00004E4ADB /* Hacker News.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hacker News.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABFC511B2245EF01004E4ADB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -38,6 +42,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ABA795292249C1C500F4F329 /* SafariActivity.framework in Frameworks */,
+				AB89379B226C100A00DD6876 /* FlexLayout.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,6 +52,7 @@
 		ABFC510F2245EF00004E4ADB = {
 			isa = PBXGroup;
 			children = (
+				AB89379A226C100A00DD6876 /* FlexLayout.framework */,
 				ABA795282249C1C500F4F329 /* SafariActivity.framework */,
 				ABFC511A2245EF00004E4ADB /* Hacker News */,
 				ABFC51192245EF00004E4ADB /* Products */,
@@ -66,6 +72,7 @@
 			children = (
 				ABFC511B2245EF01004E4ADB /* AppDelegate.swift */,
 				ABFC511D2245EF01004E4ADB /* TopStoriesViewController.swift */,
+				AB89379C226C10BA00DD6876 /* StoryCell.swift */,
 				ABFC511F2245EF01004E4ADB /* DetailViewController.swift */,
 				ABFC51212245EF01004E4ADB /* Main.storyboard */,
 				ABFC51242245EF03004E4ADB /* Assets.xcassets */,
@@ -154,11 +161,13 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/SafariActivity.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/FlexLayout.framework",
 			);
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SafariActivity.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/FlexLayout.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -176,6 +185,7 @@
 				ABFC51302245F6CC004E4ADB /* HackerNews.swift in Sources */,
 				ABFC511C2245EF01004E4ADB /* AppDelegate.swift in Sources */,
 				ABFC51322245F883004E4ADB /* Story.swift in Sources */,
+				AB89379D226C10BA00DD6876 /* StoryCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
