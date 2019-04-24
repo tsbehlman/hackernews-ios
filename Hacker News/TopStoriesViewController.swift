@@ -119,7 +119,9 @@ extension TopStoriesViewController: UITableViewDataSourcePrefetching {
             if var indexPaths = self.tableView.indexPathsForVisibleRows {
                 indexPaths = indexPaths.filter { newRowIndices.contains($0.row) }
                 if indexPaths.count > 0 {
-                    self.tableView.reloadRows(at: indexPaths, with: .none)
+                    UIView.performWithoutAnimation {
+                        self.tableView.reloadRows(at: indexPaths, with: .none)
+                    }
                 }
             }
         }
