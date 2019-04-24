@@ -109,16 +109,16 @@ extension TopStoriesViewController: UITableViewDataSourcePrefetching {
     }
     
     private func newPageDidLoad(stories: HackerNews.Page) {
-        var newRowIndices = Set<Int>()
+        let startCount = self.stories.count
         for story in stories {
             if loadedStoryIDs.insert(story.id).inserted {
-                newRowIndices.insert(self.stories.count)
                 self.stories.append(story)
             }
         }
+        let newStoryRange = startCount..<self.stories.count
         DispatchQueue.main.async {
             if var indexPaths = self.tableView.indexPathsForVisibleRows {
-                indexPaths = indexPaths.filter { newRowIndices.contains($0.row) }
+                indexPaths = indexPaths.filter { newStoryRange.contains($0.row) }
                 if indexPaths.count > 0 {
                     UIView.performWithoutAnimation {
                         self.tableView.reloadRows(at: indexPaths, with: .none)
