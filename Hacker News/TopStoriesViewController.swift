@@ -71,16 +71,7 @@ class TopStoriesViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! StoryCell
-        if indexPath.row < allStories.count {
-            let story = allStories[indexPath.row]
-            cell.titleLabel.text = story.title
-            cell.detailLabel.text = "\(story.descendants) comment\(story.descendants == 1 ? "" : "s")  \(story.domain)"
-        } else {
-            cell.titleLabel.text = " "
-            cell.detailLabel.text = " "
-        }
-        cell.titleLabel.flex.markDirty()
-        cell.detailLabel.flex.markDirty()
+        cell.configure(allStories[optional: indexPath.row])
         return cell
     }
     

@@ -9,18 +9,6 @@
 import Foundation
 import Promises
 
-func fetch(url: URL) -> Promise<Data> {
-    return Promise<Data> { resolve, reject in
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            if let response = response as? HTTPURLResponse, response.statusCode == 200 {
-                resolve(data!)
-            } else {
-                reject(error!)
-            }
-        }.resume()
-    }
-}
-
 class HackerNews {
     static let baseURL = URL(string:"http://tbehlman.com/hackernews/")!;
     

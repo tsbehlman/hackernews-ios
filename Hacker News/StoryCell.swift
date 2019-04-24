@@ -33,6 +33,18 @@ class StoryCell: UITableViewCell {
         setupViews()
     }
     
+    func configure(_ story: Story?) {
+        if let story = story {
+            titleLabel.text = story.title
+            detailLabel.text = "\(story.descendants) comment\(story.descendants == 1 ? "" : "s")  \(story.domain)"
+        } else {
+            titleLabel.text = " "
+            detailLabel.text = " "
+        }
+        titleLabel.flex.markDirty()
+        detailLabel.flex.markDirty()
+    }
+    
     func setupViews() {
         contentView.flex.define { flex in
             flex.paddingVertical(10)

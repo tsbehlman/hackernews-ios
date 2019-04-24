@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB2C782D22703B9A00D13512 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB2C782C22703B9A00D13512 /* Utils.swift */; };
 		AB89379B226C100A00DD6876 /* FlexLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB89379A226C100A00DD6876 /* FlexLayout.framework */; };
 		AB89379D226C10BA00DD6876 /* StoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB89379C226C10BA00DD6876 /* StoryCell.swift */; };
 		AB95D5CC226FE2F300F99578 /* FBLPromises.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB95D5CA226FE2F300F99578 /* FBLPromises.framework */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AB2C782C22703B9A00D13512 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		AB89379A226C100A00DD6876 /* FlexLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FlexLayout.framework; path = Carthage/Build/iOS/FlexLayout.framework; sourceTree = "<group>"; };
 		AB89379C226C10BA00DD6876 /* StoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCell.swift; sourceTree = "<group>"; };
 		AB95D5CA226FE2F300F99578 /* FBLPromises.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBLPromises.framework; path = Carthage/Build/iOS/FBLPromises.framework; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 				ABFC512F2245F6CC004E4ADB /* HackerNews.swift */,
 				ABFC51312245F883004E4ADB /* Story.swift */,
 				ABD13110226C416C00BE4B1A /* BlurredStatusBarViewController.swift */,
+				AB2C782C22703B9A00D13512 /* Utils.swift */,
 			);
 			path = "Hacker News";
 			sourceTree = "<group>";
@@ -185,6 +188,7 @@
 				ABFC511E2245EF01004E4ADB /* TopStoriesViewController.swift in Sources */,
 				ABFC51302245F6CC004E4ADB /* HackerNews.swift in Sources */,
 				ABFC511C2245EF01004E4ADB /* AppDelegate.swift in Sources */,
+				AB2C782D22703B9A00D13512 /* Utils.swift in Sources */,
 				ABD13111226C416C00BE4B1A /* BlurredStatusBarViewController.swift in Sources */,
 				ABFC51322245F883004E4ADB /* Story.swift in Sources */,
 				AB89379D226C10BA00DD6876 /* StoryCell.swift in Sources */,
