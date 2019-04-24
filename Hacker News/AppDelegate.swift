@@ -18,7 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         window = UIWindow(frame: UIScreen.main.bounds)
         let splitViewController = UISplitViewController()
         splitViewController.delegate = self
-        splitViewController.viewControllers = [BlurredStatusBarViewController(), UINavigationController()]
+        splitViewController.viewControllers = [
+            BlurredStatusBarViewController(forController: TopStoriesViewController())
+        ]
         splitViewController.preferredDisplayMode = .allVisible
         window!.makeKeyAndVisible()
         window!.rootViewController = splitViewController

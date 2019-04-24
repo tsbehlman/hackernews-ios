@@ -9,11 +9,24 @@
 import UIKit
 
 class BlurredStatusBarViewController: UIViewController {
+    let childController: UIViewController?
+    
+    init(forController controller: UIViewController) {
+        childController = controller
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        childController = nil
+        super.init(coder: aDecoder)
+    }
+    
     override func viewDidLoad() {
-        let child = TopStoriesViewController()
-        addChild(child)
-        view.addSubview(child.view)
-        child.view.frame = view.bounds
+        if let child = childController {
+            addChild(child)
+            view.addSubview(child.view)
+            child.view.frame = view.bounds
+        }
         
         // Add blur effect on status bar
         let blurEffect = UIBlurEffect(style: .regular)
