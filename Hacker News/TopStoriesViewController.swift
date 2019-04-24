@@ -52,6 +52,7 @@ class TopStoriesViewController: UITableViewController {
             
             self.allStories.removeAll()
             self.allStories.append(contentsOf: stories)
+            self.loadedStoryIDs.removeAll()
             
             DispatchQueue.main.async {
                 self.refreshControl!.endRefreshing()
