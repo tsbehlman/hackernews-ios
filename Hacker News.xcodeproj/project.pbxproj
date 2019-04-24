@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		AB89379B226C100A00DD6876 /* FlexLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB89379A226C100A00DD6876 /* FlexLayout.framework */; };
 		AB89379D226C10BA00DD6876 /* StoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB89379C226C10BA00DD6876 /* StoryCell.swift */; };
+		AB95D5CC226FE2F300F99578 /* FBLPromises.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB95D5CA226FE2F300F99578 /* FBLPromises.framework */; };
+		AB95D5CD226FE2F300F99578 /* Promises.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB95D5CB226FE2F300F99578 /* Promises.framework */; };
 		ABD13111226C416C00BE4B1A /* BlurredStatusBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABD13110226C416C00BE4B1A /* BlurredStatusBarViewController.swift */; };
 		ABFC511C2245EF01004E4ADB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFC511B2245EF01004E4ADB /* AppDelegate.swift */; };
 		ABFC511E2245EF01004E4ADB /* TopStoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFC511D2245EF01004E4ADB /* TopStoriesViewController.swift */; };
@@ -21,6 +23,8 @@
 /* Begin PBXFileReference section */
 		AB89379A226C100A00DD6876 /* FlexLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FlexLayout.framework; path = Carthage/Build/iOS/FlexLayout.framework; sourceTree = "<group>"; };
 		AB89379C226C10BA00DD6876 /* StoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCell.swift; sourceTree = "<group>"; };
+		AB95D5CA226FE2F300F99578 /* FBLPromises.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBLPromises.framework; path = Carthage/Build/iOS/FBLPromises.framework; sourceTree = "<group>"; };
+		AB95D5CB226FE2F300F99578 /* Promises.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Promises.framework; path = Carthage/Build/iOS/Promises.framework; sourceTree = "<group>"; };
 		ABD13110226C416C00BE4B1A /* BlurredStatusBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurredStatusBarViewController.swift; sourceTree = "<group>"; };
 		ABFC51182245EF00004E4ADB /* Hacker News.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hacker News.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABFC511B2245EF01004E4ADB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -37,7 +41,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB95D5CD226FE2F300F99578 /* Promises.framework in Frameworks */,
 				AB89379B226C100A00DD6876 /* FlexLayout.framework in Frameworks */,
+				AB95D5CC226FE2F300F99578 /* FBLPromises.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,6 +53,8 @@
 		ABFC510F2245EF00004E4ADB = {
 			isa = PBXGroup;
 			children = (
+				AB95D5CA226FE2F300F99578 /* FBLPromises.framework */,
+				AB95D5CB226FE2F300F99578 /* Promises.framework */,
 				AB89379A226C100A00DD6876 /* FlexLayout.framework */,
 				ABFC511A2245EF00004E4ADB /* Hacker News */,
 				ABFC51192245EF00004E4ADB /* Products */,
@@ -153,11 +161,15 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/FlexLayout.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Promises.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/FBLPromises.framework",
 			);
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/FlexLayout.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Promises.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/FBLPromises.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

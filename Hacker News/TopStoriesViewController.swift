@@ -9,6 +9,7 @@
 import UIKit
 import SafariServices
 import FlexLayout
+import Promises
 
 class TopStoriesViewController: UITableViewController {
 
@@ -16,6 +17,7 @@ class TopStoriesViewController: UITableViewController {
     var loadedStoryIDs = Set<UInt>()
     var storyPageIndex: UInt = 1
     var isLoadingData = false
+    var pagePromise = Promise(())
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,14 +47,12 @@ class TopStoriesViewController: UITableViewController {
     
     private func refreshStories() {
         isLoadingData = true
-        HackerNews.stories(forPage: 1) { stories in
+        HackerNews.stories(forPage: 1).then { stories in
             self.isLoadingData = false
             
-            if let stories = stories {
-                self.storyPageIndex = 1
-                self.stories.removeAll()
-                self.stories.append(contentsOf: stories)
-            }
+            self.storyPageIndex = 1
+            self.stories.removeAll()
+            self.stories.append(contentsOf: stories)
             
             DispatchQueue.main.async {
                 self.refreshControl!.endRefreshing()
@@ -98,26 +98,20 @@ class TopStoriesViewController: UITableViewController {
 extension TopStoriesViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         if !isLoadingData && indexPaths.contains { $0.row >= self.stories.count } {
-            isLoadingData = true
             storyPageIndex += 1
-            let newStoriesStartIndex = self.stories.count
-            HackerNews.stories(forPage: storyPageIndex) { stories in
-                self.isLoadingData = false
-                if let stories = stories {
-                    self.newPageDidLoad(stories: stories, atIndex: newStoriesStartIndex)
-                }
+            let newPagePromise = HackerNews.stories(forPage: storyPageIndex)
+            pagePromise = all(pagePromise, newPagePromise).then { _, stories in
+                self.newPageDidLoad(stories: stories)
             }
         }
     }
     
-    private func newPageDidLoad(stories: [Story], atIndex: Int) {
+    private func newPageDidLoad(stories: [Story]) {
         var newRowIndices = Set<Int>()
-        var currentIndex = atIndex
         for story in stories {
             if !loadedStoryIDs.contains(story.id) {
-                newRowIndices.insert(currentIndex)
-                self.stories.insert(story, at: currentIndex)
-                currentIndex += 1
+                newRowIndices.insert(self.stories.count)
+                self.stories.append(story)
                 loadedStoryIDs.insert(story.id)
             }
         }

@@ -7,6 +7,21 @@
 //
 
 import Foundation
+import Promises
+
+func fetch(url: URL) -> Promise<Data> {
+    return Promise<Data> { resolve, reject in
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let response = response as? HTTPURLResponse {
+                if response.statusCode == 200 {
+                    resolve(data!)
+                    return
+                }
+            }
+            reject(error!)
+        }.resume()
+    }
+}
 
 class HackerNews {
     static let baseURL = URL(string:"http://tbehlman.com/hackernews/")!;
@@ -14,26 +29,14 @@ class HackerNews {
     typealias Page = [Story]
     typealias PageCompletion = (Page?) -> Void
     
-    static func stories(forPage pageIndex: UInt, _ completion: @escaping PageCompletion) {
+    static func stories(forPage pageIndex: UInt) -> Promise<[Story]> {
         let pageURL = baseURL.appendingPathComponent("page/\(pageIndex)")
-        URLSession.shared.dataTask(with: pageURL) { data, response, error in
-            completion(HackerNews.didReceivePageOfStories(data: data, response: response, error: error))
-        }.resume()
+        return fetch(url: pageURL).then { data in
+            return try JSONDecoder().decode([Story].self, from: data)
+        }
     }
     
     static func readableURL(forStory story: Story) -> URL {
         return baseURL.appendingPathComponent("view/\(story.id)")
-    }
-    
-    private static func didReceivePageOfStories(data: Data?, response: URLResponse?, error: Error?) -> Page? {
-        if let data = data, let response = response as? HTTPURLResponse {
-            if response.statusCode == 200 {
-                do {
-                    return try JSONDecoder().decode([Story].self, from: data)
-                } catch {}
-            }
-        }
-        
-        return nil
     }
 }
