@@ -12,19 +12,14 @@ import FlexLayout
 class StoryCell: UITableViewCell {
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16.0)
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
-        label.adjustsFontSizeToFitWidth = false
         return label
     }()
     
     let detailLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12.0)
-        label.numberOfLines = 1
-        label.lineBreakMode = .byTruncatingTail
-        label.adjustsFontSizeToFitWidth = false
+        label.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
         return label
     }()
     
@@ -40,10 +35,11 @@ class StoryCell: UITableViewCell {
     
     func setupViews() {
         contentView.flex.define { flex in
-            flex.padding(12)
+            flex.paddingVertical(10)
+            flex.paddingHorizontal(14)
             flex.alignItems(.stretch)
             flex.addItem(titleLabel).grow(1)
-            flex.addItem(detailLabel).marginTop(8)
+            flex.addItem(detailLabel).marginTop(6)
         }
     }
     

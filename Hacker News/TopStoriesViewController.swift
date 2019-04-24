@@ -8,12 +8,11 @@
 
 import UIKit
 import SafariServices
-import FlexLayout
 import Promises
 
 class TopStoriesViewController: UITableViewController {
 
-    var stories = HackerNews.Page()
+    var allStories = HackerNews.Page()
     var loadedStoryIDs = Set<UInt>()
     var storyPageIndex: UInt = 1
     var isLoadingData = false
@@ -22,12 +21,11 @@ class TopStoriesViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(userDidRequestRefresh(_:)), for: .valueChanged)
-        self.refreshControl = refreshControl
+        refreshControl = UIRefreshControl()
+        refreshControl!.addTarget(self, action: #selector(userDidRequestRefresh(_:)), for: .valueChanged)
         
-        self.refreshControl?.beginRefreshing()
-        self.refreshStories()
+        refreshControl!.beginRefreshing()
+        refreshStories()
         
         tableView.showsVerticalScrollIndicator = false
         tableView.prefetchDataSource = self
@@ -43,17 +41,17 @@ class TopStoriesViewController: UITableViewController {
     
     @objc
     private func userDidRequestRefresh(_ sender: Any) {
-        self.refreshStories()
+        refreshStories()
     }
     
     private func refreshStories() {
         isLoadingData = true
+        storyPageIndex = 1
         HackerNews.stories(forPage: 1).then { stories in
             self.isLoadingData = false
             
-            self.storyPageIndex = 1
-            self.stories.removeAll()
-            self.stories.append(contentsOf: stories)
+            self.allStories.removeAll()
+            self.allStories.append(contentsOf: stories)
             
             DispatchQueue.main.async {
                 self.refreshControl!.endRefreshing()
@@ -72,8 +70,8 @@ class TopStoriesViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! StoryCell
-        if indexPath.row < stories.count {
-            let story = stories[indexPath.row]
+        if indexPath.row < allStories.count {
+            let story = allStories[indexPath.row]
             cell.titleLabel.text = story.title
             cell.detailLabel.text = "\(story.descendants) comment\(story.descendants == 1 ? "" : "s")  \(story.domain)"
         } else {
@@ -86,11 +84,11 @@ class TopStoriesViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row >= stories.count {
+        if indexPath.row >= allStories.count {
             tableView.deselectRow(at: indexPath, animated: true)
         }
         else {
-            let story = stories[indexPath.row]
+            let story = allStories[indexPath.row]
             let safariController = SFSafariViewController(url: HackerNews.readableURL(forStory: story))
             splitViewController!.showDetailViewController(safariController, sender: nil)
         }
@@ -99,7 +97,7 @@ class TopStoriesViewController: UITableViewController {
 
 extension TopStoriesViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        if !isLoadingData && indexPaths.contains { $0.row >= self.stories.count } {
+        if !isLoadingData && indexPaths.contains { $0.row >= self.allStories.count } {
             storyPageIndex += 1
             let newPagePromise = HackerNews.stories(forPage: storyPageIndex)
             pagePromise = all(pagePromise, newPagePromise).then { _, stories in
@@ -109,13 +107,13 @@ extension TopStoriesViewController: UITableViewDataSourcePrefetching {
     }
     
     private func newPageDidLoad(stories: HackerNews.Page) {
-        let startCount = self.stories.count
+        let startCount = allStories.count
         for story in stories {
             if loadedStoryIDs.insert(story.id).inserted {
-                self.stories.append(story)
+                allStories.append(story)
             }
         }
-        let newStoryRange = startCount..<self.stories.count
+        let newStoryRange = startCount..<allStories.count
         DispatchQueue.main.async {
             if var indexPaths = self.tableView.indexPathsForVisibleRows {
                 indexPaths = indexPaths.filter { newStoryRange.contains($0.row) }
