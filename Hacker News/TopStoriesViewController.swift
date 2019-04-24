@@ -26,6 +26,7 @@ class TopStoriesViewController: UITableViewController {
         refreshControl.addTarget(self, action: #selector(userDidRequestRefresh(_:)), for: .valueChanged)
         self.refreshControl = refreshControl
         
+        self.refreshControl?.beginRefreshing()
         self.refreshStories()
         
         tableView.showsVerticalScrollIndicator = false
@@ -56,7 +57,9 @@ class TopStoriesViewController: UITableViewController {
             
             DispatchQueue.main.async {
                 self.refreshControl!.endRefreshing()
-                self.tableView.reloadData()
+                if let indexPaths = self.tableView.indexPathsForVisibleRows {
+                    self.tableView.reloadRows(at: indexPaths, with: .none)
+                }
             }
         }
     }
