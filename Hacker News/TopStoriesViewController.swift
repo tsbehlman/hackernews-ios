@@ -13,7 +13,7 @@ import Promises
 
 class TopStoriesViewController: UITableViewController {
 
-    var stories = [Story]()
+    var stories = HackerNews.Page()
     var loadedStoryIDs = Set<UInt>()
     var storyPageIndex: UInt = 1
     var isLoadingData = false
@@ -71,9 +71,8 @@ class TopStoriesViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! StoryCell
         if indexPath.row < stories.count {
             let story = stories[indexPath.row]
-            let commentsLabel = "comment" + (story.descendants == 1 ? "" : "s")
             cell.titleLabel.text = story.title
-            cell.detailLabel.text = "\(story.descendants) \(commentsLabel)  \(story.domain)"
+            cell.detailLabel.text = "\(story.descendants) comment\(story.descendants == 1 ? "" : "s")  \(story.domain)"
         } else {
             cell.titleLabel.text = " "
             cell.detailLabel.text = " "
@@ -88,7 +87,7 @@ class TopStoriesViewController: UITableViewController {
             tableView.deselectRow(at: indexPath, animated: true)
         }
         else {
-            let story = stories[indexPath.row] as Story
+            let story = stories[indexPath.row]
             let safariController = SFSafariViewController(url: HackerNews.readableURL(forStory: story))
             splitViewController!.showDetailViewController(safariController, sender: nil)
         }
@@ -106,13 +105,12 @@ extension TopStoriesViewController: UITableViewDataSourcePrefetching {
         }
     }
     
-    private func newPageDidLoad(stories: [Story]) {
+    private func newPageDidLoad(stories: HackerNews.Page) {
         var newRowIndices = Set<Int>()
         for story in stories {
-            if !loadedStoryIDs.contains(story.id) {
+            if loadedStoryIDs.insert(story.id).inserted {
                 newRowIndices.insert(self.stories.count)
                 self.stories.append(story)
-                loadedStoryIDs.insert(story.id)
             }
         }
         DispatchQueue.main.async {

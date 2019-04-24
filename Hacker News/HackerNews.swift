@@ -12,13 +12,11 @@ import Promises
 func fetch(url: URL) -> Promise<Data> {
     return Promise<Data> { resolve, reject in
         URLSession.shared.dataTask(with: url) { data, response, error in
-            if let response = response as? HTTPURLResponse {
-                if response.statusCode == 200 {
-                    resolve(data!)
-                    return
-                }
+            if let response = response as? HTTPURLResponse, response.statusCode == 200 {
+                resolve(data!)
+            } else {
+                reject(error!)
             }
-            reject(error!)
         }.resume()
     }
 }
@@ -27,9 +25,8 @@ class HackerNews {
     static let baseURL = URL(string:"http://tbehlman.com/hackernews/")!;
     
     typealias Page = [Story]
-    typealias PageCompletion = (Page?) -> Void
     
-    static func stories(forPage pageIndex: UInt) -> Promise<[Story]> {
+    static func stories(forPage pageIndex: UInt) -> Promise<Page> {
         let pageURL = baseURL.appendingPathComponent("page/\(pageIndex)")
         return fetch(url: pageURL).then { data in
             return try JSONDecoder().decode([Story].self, from: data)
