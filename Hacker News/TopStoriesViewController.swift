@@ -93,7 +93,7 @@ class TopStoriesViewController: UITableViewController {
 
 extension TopStoriesViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        if (indexPaths.contains { $0.row >= self.allStories.count }) {
+        if indexPaths.last!.row >= self.allStories.count {
             storyPageIndex += 1
             let newPageIndex = storyPageIndex
             let newPagePromise = HackerNews.stories(forPage: newPageIndex)
