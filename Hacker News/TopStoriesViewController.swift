@@ -106,7 +106,8 @@ extension TopStoriesViewController: UITableViewDataSourcePrefetching {
     
     private func loadNextPageIfNeeded() {
         let prefetchStoryCount = allStories.count + numPendingPages * STORIES_PER_PAGE
-        if maxRowToPrefetch >= prefetchStoryCount {
+        var prefetchDeficit = maxRowToPrefetch - prefetchStoryCount;
+        while prefetchDeficit > 0 {
             numPendingPages += 1
             storyPageIndex += 1
             let newPageIndex = storyPageIndex
@@ -114,6 +115,7 @@ extension TopStoriesViewController: UITableViewDataSourcePrefetching {
             pagePromise = all(pagePromise, newPagePromise).then { _, stories in
                 self.didLoad(stories: stories, forPageIndex: newPageIndex)
             }
+            prefetchDeficit -= STORIES_PER_PAGE
         }
     }
     
