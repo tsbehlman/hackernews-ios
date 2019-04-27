@@ -10,12 +10,17 @@ import UIKit
 import SafariServices
 import Promises
 
+let MAX_STORIES = 10_000;
+let STORIES_PER_PAGE = 30;
+
 class TopStoriesViewController: UITableViewController {
 
     var allStories = HackerNews.Page()
     var loadedStoryIDs = Set<UInt>()
     var storyPageIndex: UInt = 1
     var pagePromise = Promise(())
+    var numPendingPages = 1
+    var maxRowToPrefetch = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,6 +56,8 @@ class TopStoriesViewController: UITableViewController {
     }
     
     private func didLoad(firstPage stories: HackerNews.Page) {
+        numPendingPages -= 1
+        
         allStories.removeAll()
         loadedStoryIDs.removeAll()
         
@@ -70,7 +77,7 @@ class TopStoriesViewController: UITableViewController {
     // MARK: - Table View
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10000
+        return MAX_STORIES
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -93,7 +100,14 @@ class TopStoriesViewController: UITableViewController {
 
 extension TopStoriesViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        if indexPaths.last!.row >= self.allStories.count {
+        maxRowToPrefetch = max(maxRowToPrefetch, indexPaths.last!.row)
+        loadNextPageIfNeeded()
+    }
+    
+    private func loadNextPageIfNeeded() {
+        let prefetchStoryCount = allStories.count + numPendingPages * STORIES_PER_PAGE
+        if maxRowToPrefetch >= prefetchStoryCount {
+            numPendingPages += 1
             storyPageIndex += 1
             let newPageIndex = storyPageIndex
             let newPagePromise = HackerNews.stories(forPage: newPageIndex)
@@ -104,9 +118,12 @@ extension TopStoriesViewController: UITableViewDataSourcePrefetching {
     }
     
     private func didLoad(stories: HackerNews.Page, forPageIndex pageIndex: UInt) {
+        numPendingPages -= 1
+        
         if pageIndex > storyPageIndex {
             return // Refresh has occurred. Currently there is no way to cancel a promise
         }
+        
         let startCount = allStories.count
         for story in stories {
             if loadedStoryIDs.insert(story.id).inserted {
@@ -124,5 +141,7 @@ extension TopStoriesViewController: UITableViewDataSourcePrefetching {
                 }
             }
         }
+        
+        loadNextPageIfNeeded();
     }
 }
