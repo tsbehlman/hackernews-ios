@@ -15,7 +15,6 @@ class TopStoriesViewController: UITableViewController {
     var allStories = HackerNews.Page()
     var loadedStoryIDs = Set<UInt>()
     var storyPageIndex: UInt = 1
-    var isLoadingData = false
     var pagePromise = Promise(())
 
     override func viewDidLoad() {
@@ -45,20 +44,25 @@ class TopStoriesViewController: UITableViewController {
     }
     
     private func refreshStories() {
-        isLoadingData = true
         storyPageIndex = 1
-        HackerNews.stories(forPage: 1).then { stories in
-            self.isLoadingData = false
-            
-            self.allStories.removeAll()
-            self.allStories.append(contentsOf: stories)
-            self.loadedStoryIDs.removeAll()
-            
-            DispatchQueue.main.async {
-                self.refreshControl!.endRefreshing()
-                if let indexPaths = self.tableView.indexPathsForVisibleRows {
-                    self.tableView.reloadRows(at: indexPaths, with: .none)
-                }
+        pagePromise = HackerNews.stories(forPage: 1).then { stories in
+            self.didLoad(firstPage: stories)
+        }
+    }
+    
+    private func didLoad(firstPage stories: HackerNews.Page) {
+        allStories.removeAll()
+        loadedStoryIDs.removeAll()
+        
+        for story in stories {
+            allStories.append(story)
+            loadedStoryIDs.insert(story.id)
+        }
+        
+        DispatchQueue.main.async {
+            self.refreshControl!.endRefreshing()
+            if let indexPaths = self.tableView.indexPathsForVisibleRows {
+                self.tableView.reloadRows(at: indexPaths, with: .none)
             }
         }
     }
@@ -89,16 +93,20 @@ class TopStoriesViewController: UITableViewController {
 
 extension TopStoriesViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        if !isLoadingData && indexPaths.contains { $0.row >= self.allStories.count } {
+        if (indexPaths.contains { $0.row >= self.allStories.count }) {
             storyPageIndex += 1
-            let newPagePromise = HackerNews.stories(forPage: storyPageIndex)
+            let newPageIndex = storyPageIndex
+            let newPagePromise = HackerNews.stories(forPage: newPageIndex)
             pagePromise = all(pagePromise, newPagePromise).then { _, stories in
-                self.newPageDidLoad(stories: stories)
+                self.didLoad(stories: stories, forPageIndex: newPageIndex)
             }
         }
     }
     
-    private func newPageDidLoad(stories: HackerNews.Page) {
+    private func didLoad(stories: HackerNews.Page, forPageIndex pageIndex: UInt) {
+        if pageIndex > storyPageIndex {
+            return // Refresh has occurred. Currently there is no way to cancel a promise
+        }
         let startCount = allStories.count
         for story in stories {
             if loadedStoryIDs.insert(story.id).inserted {
