@@ -17,10 +17,10 @@ class TopStoriesViewController: UITableViewController {
 
     var allStories = HackerNews.Page()
     var loadedStoryIDs = Set<UInt>()
-    var storyPageIndex: UInt = 1
+    var storyPageIndex: UInt = 0
     var pagePromise = Promise(())
-    var numPendingPages = 1
-    var maxRowToPrefetch = 0
+    var numPendingPages = 0
+    var maxRowToPrefetch = STORIES_PER_PAGE
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +29,7 @@ class TopStoriesViewController: UITableViewController {
         refreshControl!.addTarget(self, action: #selector(userDidRequestRefresh(_:)), for: .valueChanged)
         
         refreshControl!.beginRefreshing()
-        refreshStories()
+        self.loadNextPageIfNeeded()
         
         tableView.showsVerticalScrollIndicator = false
         tableView.prefetchDataSource = self
@@ -45,33 +45,20 @@ class TopStoriesViewController: UITableViewController {
     
     @objc
     private func userDidRequestRefresh(_ sender: Any) {
-        refreshStories()
-    }
-    
-    private func refreshStories() {
-        storyPageIndex = 1
-        pagePromise = HackerNews.stories(forPage: 1).then { stories in
-            self.didLoad(firstPage: stories)
-        }
-    }
-    
-    private func didLoad(firstPage stories: HackerNews.Page) {
-        numPendingPages -= 1
-        
         allStories.removeAll()
         loadedStoryIDs.removeAll()
-        
-        for story in stories {
-            allStories.append(story)
-            loadedStoryIDs.insert(story.id)
-        }
+        storyPageIndex = 0
+        maxRowToPrefetch = STORIES_PER_PAGE
         
         DispatchQueue.main.async {
-            self.refreshControl!.endRefreshing()
             if let indexPaths = self.tableView.indexPathsForVisibleRows {
-                self.tableView.reloadRows(at: indexPaths, with: .none)
+                UIView.performWithoutAnimation {
+                    self.tableView.reloadRows(at: indexPaths, with: .none)
+                }
             }
         }
+        
+        self.loadNextPageIfNeeded()
     }
 
     // MARK: - Table View
@@ -141,6 +128,9 @@ extension TopStoriesViewController: UITableViewDataSourcePrefetching {
                         self.tableView.reloadRows(at: indexPaths, with: .none)
                     }
                 }
+            }
+            if self.refreshControl!.isRefreshing {
+                self.refreshControl!.endRefreshing()
             }
         }
         
